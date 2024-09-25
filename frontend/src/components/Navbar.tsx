@@ -9,25 +9,27 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import StoreIcon from "@mui/icons-material/Store";
 
 const settings: string[] = ["Profile", "Account", "Dashboard", "Logout"];
 
-function Navbar() {
+const Navbar: React.FC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = (): void => {
+  const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#1e3a8a" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#ffffff" }}>
+      {" "}
+      {/* Navbar background set to white */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -46,7 +48,8 @@ function Navbar() {
                 alignItems: "center",
               }}
             >
-              <AdbIcon sx={{ display: "flex", mr: 1, color: "#ffffff" }} />
+              <StoreIcon sx={{ display: "flex", mr: 1, color: "#1e3a8a" }} />{" "}
+              {/* Icon color */}
               <Typography
                 variant="h6"
                 noWrap
@@ -56,7 +59,7 @@ function Navbar() {
                   display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
                   fontWeight: 700,
-                  color: "#ffffff",
+                  color: "#1e3a8a", // Adjust text color to contrast with white background
                   textDecoration: "none",
                 }}
               >
@@ -69,7 +72,7 @@ function Navbar() {
                   <Avatar
                     alt="User Avatar"
                     src="/static/images/avatar/2.jpg"
-                    sx={{ border: "2px solid #ffffff" }}
+                    sx={{ border: "2px solid #1e3a8a" }}
                   />
                 </IconButton>
               </Tooltip>
@@ -112,6 +115,6 @@ function Navbar() {
       </Container>
     </AppBar>
   );
-}
+};
 
 export default Navbar;
