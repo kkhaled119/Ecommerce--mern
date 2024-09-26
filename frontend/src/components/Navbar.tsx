@@ -10,10 +10,12 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import StoreIcon from "@mui/icons-material/Store";
+import { useAuth } from "../context/Auth/AuthContext";
 
 const settings: string[] = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar: React.FC = () => {
+  const { username, token } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -25,6 +27,7 @@ const Navbar: React.FC = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  console.log("from navbar", username, token);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#ffffff" }}>

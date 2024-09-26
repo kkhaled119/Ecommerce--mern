@@ -1,8 +1,10 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { BASE_URL } from "../components/constants/baseurl";
+import { useAuth } from "../context/Auth/AuthContext";
 
 const RegisterPage = () => {
+  const { login } = useAuth();
   const [error, setError] = useState("");
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -17,30 +19,36 @@ const RegisterPage = () => {
     const password = passwordRef.current?.value;
     console.log(firstName, lastName, email, password);
 
-    try {
-      const response = await fetch(`${BASE_URL}/user/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        setError("Unable to register user,please try different credientials!");
-        return;
-      }
-
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+    //validate the form data
+    if (!firstName || !email || !password) {
+      return;
     }
+
+    const response = await fetch(`${BASE_URL}/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      setError("Unable to register user,please try different credientials!");
+      return;
+    }
+
+    const token = await response.json();
+    if (!token) {
+      setError("Incorrect token");
+      return;
+    }
+
+    login(email, token);
   };
 
   return (
