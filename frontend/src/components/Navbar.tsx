@@ -11,14 +11,18 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import StoreIcon from "@mui/icons-material/Store";
 import { useAuth } from "../context/Auth/AuthContext";
-
-const settings: string[] = ["Profile", "Account", "Dashboard", "Logout"];
+import { Button, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  const { username, token } = useAuth();
+  const navigate = useNavigate();
+  const { username, isAuthenticated } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const handeLogin = () => {
+    navigate("/login");
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -27,12 +31,11 @@ const Navbar: React.FC = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  console.log("from navbar", username, token);
+
+  console.log("from navbar", username, isAuthenticated);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#ffffff" }}>
-      {" "}
-      {/* Navbar background set to white */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -51,8 +54,7 @@ const Navbar: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <StoreIcon sx={{ display: "flex", mr: 1, color: "#1e3a8a" }} />{" "}
-              {/* Icon color */}
+              <StoreIcon sx={{ display: "flex", mr: 1, color: "#1e3a8a" }} />
               <Typography
                 variant="h6"
                 noWrap
@@ -62,7 +64,7 @@ const Navbar: React.FC = () => {
                   display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
                   fontWeight: 700,
-                  color: "#1e3a8a", // Adjust text color to contrast with white background
+                  color: "#1e3a8a",
                   textDecoration: "none",
                 }}
               >
@@ -70,48 +72,86 @@ const Navbar: React.FC = () => {
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="User Avatar"
-                    src="/static/images/avatar/2.jpg"
-                    sx={{ border: "2px solid #1e3a8a" }}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={handleCloseUserMenu}
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "#1e40af",
-                        color: "#ffffff",
-                      },
+              {isAuthenticated ? (
+                <>
+                  <Tooltip title="Open settings">
+                    <Grid
+                      container
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      gap={2}
+                    >
+                      <Grid item>
+                        <Typography color="black">{username}</Typography>
+                      </Grid>
+                      <Grid item>
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                          <Avatar
+                            alt={username || ""}
+                            src="/static/images/avatar/2.jpg"
+                            sx={{ border: "2px solid #1e3a8a" }}
+                          />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
                     }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
                   >
-                    <Typography sx={{ textAlign: "center", color: "#1e3a8a" }}>
-                      {setting}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#1e40af",
+                          color: "#ffffff",
+                        },
+                      }}
+                    >
+                      <Typography
+                        sx={{ textAlign: "center", color: "#1e3a8a" }}
+                      >
+                        Orders
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#1e40af",
+                          color: "#ffffff",
+                        },
+                      }}
+                    >
+                      <Typography
+                        sx={{ textAlign: "center", color: "#1e3a8a" }}
+                      >
+                        Log out
+                      </Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handeLogin}
+                >
+                  Login
+                </Button>
+              )}
             </Box>
           </Box>
         </Toolbar>
