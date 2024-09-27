@@ -5,8 +5,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import StoreIcon from "@mui/icons-material/Store";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../context/Auth/AuthContext";
-import { Button } from "@mui/material";
+import { Badge, Button, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
@@ -16,6 +17,10 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handelCart = () => {
+    navigate("/cart");
   };
 
   return (
@@ -59,6 +64,11 @@ const Navbar: React.FC = () => {
           <Box
             sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 2 }}
           >
+            <IconButton aria-label="cart" onClick={handelCart}>
+              <Badge badgeContent={4} sx={{ color: "red" }}>
+                <ShoppingCart sx={{ color: "#fff" }} />
+              </Badge>
+            </IconButton>
             {isAuthenticated ? (
               <>
                 <Typography color="white" variant="h6">
