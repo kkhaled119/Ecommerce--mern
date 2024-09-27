@@ -16,12 +16,18 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { username, isAuthenticated } = useAuth();
+  const { username, isAuthenticated, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const handeLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    handleCloseUserMenu();
   };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -127,7 +133,7 @@ const Navbar: React.FC = () => {
                       </Typography>
                     </MenuItem>
                     <MenuItem
-                      onClick={handleCloseUserMenu}
+                      onClick={handleLogout}
                       sx={{
                         "&:hover": {
                           backgroundColor: "#1e40af",
