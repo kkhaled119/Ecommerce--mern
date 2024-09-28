@@ -9,8 +9,10 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../context/Auth/AuthContext";
 import { Badge, Button, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/cart/CartContext";
 
 const Navbar: React.FC = () => {
+  const { cartItems } = useCart();
   const { username, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -65,7 +67,7 @@ const Navbar: React.FC = () => {
             sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 2 }}
           >
             <IconButton aria-label="cart" onClick={handelCart}>
-              <Badge badgeContent={4} sx={{ color: "red" }}>
+              <Badge badgeContent={cartItems.length} sx={{ color: "red" }}>
                 <ShoppingCart sx={{ color: "#fff" }} />
               </Badge>
             </IconButton>
