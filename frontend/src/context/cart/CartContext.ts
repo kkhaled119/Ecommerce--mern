@@ -3,13 +3,13 @@ import { CartItem } from "../../types/CartItem";
 
 interface CartContextType {
   cartItems: CartItem[];
-  totalAmoutn: number;
+  totalAmount: number;
   addItemToCart: (productId: string) => void;
 }
 
 export const CartContext = createContext<CartContextType>({
   cartItems: [],
-  totalAmoutn: 0,
+  totalAmount: 0,
   addItemToCart: () => {},
 });
 

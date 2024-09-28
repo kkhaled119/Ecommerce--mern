@@ -13,7 +13,7 @@ interface props {
   price: string;
 }
 
-export default function ProductCard({ _id, price, title, image }: props) {
+export default function ProductCard({ _id, title, image, price }: props) {
   const { addItemToCart } = useCart();
   return (
     <Card
