@@ -1,32 +1,50 @@
-import { Box, Typography } from "@mui/material";
-import { useAuth } from "../context/Auth/AuthContext";
+import { Box, Container, Typography } from "@mui/material";
 import { useCart } from "../context/cart/CartContext";
+import { Button, ButtonGroup } from "@mui/material";
 
 const CartPage = () => {
-  // Use the hooks inside the component
-  const { token } = useAuth(); // Destructuring from useAuth
-  const { cartItems, totalAmount } = useCart(); // Destructuring from useCart
+  const { cartItems, totalAmount } = useCart();
 
   return (
-    <Box>
-      {cartItems && cartItems.length > 0 ? (
-        cartItems.map((item) => (
+    <Container fixed sx={{ mt: 2 }}>
+      <Typography variant="h4">My Cart</Typography>
+      <Box gap={4} display="flex" flexDirection="column">
+        {cartItems.map((item) => (
           <Box
-            key={item.id}
-            sx={{ padding: 2, borderBottom: "1px solid #ccc" }}
+            key={item.productId}
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{
+              border: 1,
+              borderColor: "#f2f2f2",
+              borderRadius: 5,
+              padding: 1,
+            }}
           >
-            <Typography variant="h6">{item.title}</Typography>
-            <Typography variant="body1">Price: ${item.price}</Typography>
-            <Typography variant="body2">Quantity: {item.quantity}</Typography>
+            <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
+              <img src={item.image} width={90} alt={item.title} />
+              <Box>
+                <Typography variant="h5"> {item.title}</Typography>
+                <Typography>
+                  {item.quantity} x {item.unitePrice || item.price}$
+                </Typography>
+                <Button>remove</Button>
+              </Box>
+            </Box>
+            <ButtonGroup variant="contained" aria-label="Basic button group">
+              <Button>-</Button>
+              <Button>+</Button>
+            </ButtonGroup>
           </Box>
-        ))
-      ) : (
-        <Typography variant="h6">Your cart is empty</Typography>
-      )}
-      <Box mt={2}>
-        <Typography variant="h6">Total Amount: ${totalAmount}</Typography>
+        ))}
+        <Typography variant="h4">
+          {" "}
+          <Box>Total Amount:{totalAmount} $</Box>
+        </Typography>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
