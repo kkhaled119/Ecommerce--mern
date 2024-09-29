@@ -1,9 +1,16 @@
-import { Box, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  ButtonGroup,
+  IconButton,
+} from "@mui/material";
 import { useCart } from "../context/cart/CartContext";
-import { Button, ButtonGroup, IconButton } from "@mui/material";
 import { FaTrashAlt } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { keyframes } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 // إنشاء أنميشين للكارت عند التحويم
 const hoverEffect = keyframes`
@@ -18,6 +25,7 @@ const hoverEffect = keyframes`
 `;
 
 const CartPage = () => {
+  const navigate = useNavigate(); // يجب أن يكون هنا داخل الدالة
   const {
     cartItems,
     totalAmount,
@@ -25,6 +33,10 @@ const CartPage = () => {
     removeItemInCart,
     clearCart,
   } = useCart();
+
+  const handleClick = () => {
+    navigate("/checkout");
+  };
 
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
@@ -47,7 +59,7 @@ const CartPage = () => {
       >
         <Typography variant="h4">My Cart</Typography>
         <Button
-          onClick={() => clearCart()}
+          onClick={clearCart}
           variant="contained"
           sx={{
             bgcolor: "black",
@@ -148,9 +160,21 @@ const CartPage = () => {
               </ButtonGroup>
             </Box>
           ))}
-          <Typography variant="h4">
-            <Box>Total Amount: {totalAmount} $</Box>
-          </Typography>
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4">
+              <Box>Total Amount: {totalAmount} $</Box>
+            </Typography>
+            <Button
+              onClick={handleClick}
+              style={{ backgroundColor: "black", color: "white" }}
+            >
+              Go To Checkout
+            </Button>
+          </Box>
         </Box>
       ) : (
         <Typography>
