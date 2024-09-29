@@ -177,6 +177,31 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const clearCart = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/cart/`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        setError("Failed to delete item from cart.");
+        return;
+      }
+      const cart = await response.json();
+      if (!cart) {
+        setError("Failed to empty cart.");
+        return;
+      }
+
+      setCartItems([]);
+      setTotalAmount(0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -185,6 +210,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         addItemToCart,
         updateItemInCart,
         removeItemInCart,
+        clearCart,
       }}
     >
       {children}
